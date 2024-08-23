@@ -24,13 +24,13 @@ def process_images(device_id, combined_dict, output_dir):
     )
     pipe = pipe.to(device_id)
 
-    for file_path in tqdm(list(combined_dict.keys())):
+    for file_path, value in tqdm(combined_dict):
         output_file = os.path.join(output_dir, file_path + '.png')
         if os.path.exists(output_file):
             continue
         else:
-            promp = combined_dict[file_path]['cogvlm_caption']
-            aspect_ratio = combined_dict[file_path]['width'] / combined_dict[file_path]['height']
+            promp = value['cogvlm_caption']
+            aspect_ratio = value['width'] / value['height']
             ran_size = 1024
             total_pixels = ran_size * ran_size
             width = int(np.sqrt(total_pixels * aspect_ratio))
@@ -59,18 +59,18 @@ if __name__ == '__main__':
     combined_dict.update(file2)
     combined_dict.update(file3)
 
-    # 将 combined_dict 分成 8 个部分
-    combined_dict_parts = [[] for _ in range(8)]
+    num_gpus = torch.cuda.device_count()
+    combined_dict_parts = [[] for _ in range(num_gpus)]
 
     keys = list(combined_dict.keys())
     for i, key in enumerate(keys):
-        combined_dict_parts[i % 8].append((key, combined_dict[key]))
+        combined_dict_parts[i % num_gpus].append((key, combined_dict[key]))
+
 
     output_dir = 'FLUX'
     os.makedirs(output_dir, exist_ok=True)
 
     # 获取可用的 GPU 数量
-    num_gpus = torch.cuda.device_count()
     processes = []
 
     # 为每个 GPU 创建一个进程
