@@ -12,12 +12,14 @@ from torch.multiprocessing import Process, set_start_method
 set_start_method('spawn', force=True)
 
 def process_images(device_id, combined_dict, output_dir):
-    pipe = FluxPipeline.from_pretrained(
-        "black-forest-labs/FLUX.1-dev",
+
+    pipe = DiffusionPipeline.from_pretrained(
+        "playgroundai/playground-v2.5-1024px-aesthetic",
         torch_dtype=torch.float16,
+        variant="fp16",
         use_safetensors=True,
-        safety_checker=None,
-        requires_safety_checker=False,
+        safety_checker = None,
+        requires_safety_checker = False
     )
     pipe = pipe.to(device_id)
 
@@ -34,7 +36,8 @@ def process_images(device_id, combined_dict, output_dir):
             height = int(total_pixels / width)
             image = pipe(prompt=promp,
                          height=make_divisible_by_8(height), width=make_divisible_by_8(width),
-                         guidance_scale=3.5, num_images_per_prompt=1, max_sequence_length=512,
+                         num_inference_steps=50,
+                         guidance_scale=3, num_images_per_prompt=1,
                          ).images[0]
             image.save(output_file)
 
@@ -64,7 +67,7 @@ if __name__ == '__main__':
         combined_dict_parts[i % num_gpus].append((key, combined_dict[key]))
 
 
-    output_dir = 'FLUX'
+    output_dir = 'playground-v2.5-1024px-aesthetic'
     os.makedirs(output_dir, exist_ok=True)
 
     processes = []
