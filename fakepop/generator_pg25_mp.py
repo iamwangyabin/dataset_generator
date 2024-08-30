@@ -6,7 +6,7 @@ import base64
 from tqdm import tqdm
 import json
 import torch
-from diffusers import FluxPipeline
+from diffusers import DiffusionPipeline
 from torch.multiprocessing import Process, set_start_method
 
 set_start_method('spawn', force=True)

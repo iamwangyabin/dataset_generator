@@ -14,6 +14,6 @@ conda activate cl
 
 export HF_HOME=/scratch/yw26g23/cache/
 
-python generator_flux_mp.py
+python generator_pg25_mp.py
 
 
