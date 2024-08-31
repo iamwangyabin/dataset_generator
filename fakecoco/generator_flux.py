@@ -35,7 +35,7 @@ os.makedirs(output_dir, exist_ok=True)
 def make_divisible_by_8(value):
     return (value // 8) * 8
 
-file_paths = list(combined_dict.keys())
+file_paths = list(file_name2captions.keys())
 random.shuffle(file_paths)
 
 
