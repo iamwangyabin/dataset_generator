@@ -74,8 +74,10 @@ def smart_resize(
         w_bar = ceil_by_factor(width * beta, factor)
     return h_bar, w_bar
 
+file_paths = list(combined_dict.keys())
+random.shuffle(file_paths)
 
-for file_path in tqdm(list(combined_dict.keys())):
+for file_path in tqdm(file_paths):
     output_file = os.path.join(output_dir, file_path + '.png')
     if os.path.exists(output_file):
         continue
