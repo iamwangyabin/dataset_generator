@@ -27,8 +27,6 @@ pipe = FluxPipeline.from_pretrained(
     requires_safety_checker = False,
     device_map="balanced"
 )
-# pipe.enable_model_cpu_offload()
-# pipe = pipe.to('cuda')
 
 output_dir = 'FLUX'
 os.makedirs(output_dir, exist_ok=True)
@@ -37,7 +35,11 @@ os.makedirs(output_dir, exist_ok=True)
 def make_divisible_by_8(value):
     return (value // 8) * 8
 
-for file_path in tqdm(sorted(list(file_name2captions.keys()), reverse=True)):
+file_paths = list(combined_dict.keys())
+random.shuffle(file_paths)
+
+
+for file_path in tqdm(file_paths):
     output_file = os.path.join(output_dir, file_path.split('.')[0] + '_0.png')
     if os.path.exists(output_file):
         continue
