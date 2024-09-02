@@ -52,7 +52,7 @@ file_paths = list(combined_dict.keys())[:3000]
 random.shuffle(file_paths)
 
 for file_path in tqdm(file_paths):
-    output_file = os.path.join(output_dir, file_path.split('.')[0] + '_0.png')
+    output_file = os.path.join(output_dir, file_path + '.png')
     if os.path.exists(output_file):
         continue
     else:
@@ -77,8 +77,8 @@ for file_path in tqdm(file_paths):
             negative_prompt=negative_prompt,
             guidance_scale=0.0,
             num_inference_steps=10
-        ).images
+        ).images[0]
 
-        for idx, img in enumerate(images):
-            img.save(os.path.join(output_dir, file_path.split('.')[0] + f'_{idx}.png'))
+        image.save(output_file)
+
 

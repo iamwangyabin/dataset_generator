@@ -44,7 +44,7 @@ file_paths = list(combined_dict.keys())[:3000]
 random.shuffle(file_paths)
 
 for file_path in tqdm(file_paths):
-    output_file = os.path.join(output_dir, file_path.split('.')[0] + '_0.png')
+    output_file = os.path.join(output_dir, file_path + '.png')
     if os.path.exists(output_file):
         continue
     else:
