@@ -56,5 +56,5 @@ for file_path in tqdm(file_paths):
                     height=make_divisible_by_8(height), width=make_divisible_by_8(width),
                     guidance_scale=7, num_images_per_prompt=1,
                     ).images[0]
-        image.save(output_file)
+        images.save(output_file)
 

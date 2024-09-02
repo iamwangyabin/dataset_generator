@@ -79,6 +79,6 @@ for file_path in tqdm(file_paths):
             num_inference_steps=10
         ).images[0]
 
-        image.save(output_file)
+        images.save(output_file)
 
 

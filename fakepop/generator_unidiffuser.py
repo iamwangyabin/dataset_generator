@@ -56,6 +56,6 @@ for file_path in tqdm(file_paths):
                     num_inference_steps=50,
                     guidance_scale=8.0, num_images_per_prompt=1,
                     ).images[0]
-        image.save(output_file)
+        images.save(output_file)
 
 
