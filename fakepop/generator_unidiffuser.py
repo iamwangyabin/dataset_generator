@@ -6,18 +6,16 @@ import base64
 from tqdm import tqdm
 import json
 import torch
-from diffusers import DiffusionPipeline
+from diffusers import UniDiffuserPipeline
 
-
-pipe = DiffusionPipeline.from_pretrained(
-    "playgroundai/playground-v2.5-1024px-aesthetic",
+pipe = UniDiffuserPipeline.from_pretrained(
+    "thu-ml/unidiffuser-v1",
     torch_dtype=torch.float16,
-    variant="fp16",
-    use_safetensors=True,
     safety_checker = None,
     requires_safety_checker = False
 )
 pipe = pipe.to('cuda')
+
 
 with open('chunk_1.0.json', 'r') as json_file:
     file1 = json.load(json_file)
@@ -33,9 +31,8 @@ combined_dict.update(file1)
 combined_dict.update(file2)
 combined_dict.update(file3)
 
-output_dir = 'playground-v2.5-1024px-aesthetic'
+output_dir = 'unidiffuser-v1'
 os.makedirs(output_dir, exist_ok=True)
-
 
 def make_divisible_by_8(value):
     return (value // 8) * 8
@@ -50,14 +47,14 @@ for file_path in tqdm(file_paths):
     else:
         promp = combined_dict[file_path]['cogvlm_caption']
         aspect_ratio = combined_dict[file_path]['width']/combined_dict[file_path]['height']
-        ran_size = 1024
+        ran_size = 512
         total_pixels = ran_size*ran_size
         width = int(np.sqrt(total_pixels * aspect_ratio))
         height = int(total_pixels / width)
-        image = pipe(prompt=promp,
+        images = pipe(prompt=promp,
                     height=make_divisible_by_8(height), width=make_divisible_by_8(width),
                     num_inference_steps=50,
-                    guidance_scale=3, num_images_per_prompt=1,
-                    ).images[0]
-        image.save(output_file)
-
+                    guidance_scale=8.0, num_images_per_prompt=1,
+                    ).images
+        for idx, img in enumerate(images):
+            img.save(os.path.join(output_dir, file_path.split('.')[0] + f'_{idx}.png'))

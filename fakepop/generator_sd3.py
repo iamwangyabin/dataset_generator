@@ -74,7 +74,7 @@ def smart_resize(
         w_bar = ceil_by_factor(width * beta, factor)
     return h_bar, w_bar
 
-file_paths = list(combined_dict.keys())
+file_paths = list(combined_dict.keys())[:3000]
 random.shuffle(file_paths)
 
 for file_path in tqdm(file_paths):
