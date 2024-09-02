@@ -25,7 +25,6 @@ combined_dict.update(file3)
 
 pipe = PixArtAlphaPipeline.from_pretrained("PixArt-alpha/PixArt-XL-2-1024-MS", 
         torch_dtype=torch.float16, use_safetensors=True,
-        use_safetensors=True,
         safety_checker = None,
         requires_safety_checker = False
         )
