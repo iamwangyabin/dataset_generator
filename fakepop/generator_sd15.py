@@ -9,7 +9,7 @@ import torch
 from diffusers import StableDiffusionPipeline
 
 pipe = StableDiffusionPipeline.from_pretrained(
-    "runwayml/stable-diffusion-v1-5",
+    "botp/stable-diffusion-v1-5",
     torch_dtype=torch.float16,
     use_safetensors=True,
     safety_checker = None,
