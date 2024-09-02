@@ -14,6 +14,6 @@ conda activate cl
 
 export HF_HOME=/scratch/yw26g23/cache/
 
-python generator_sd3.py
+python generator_sd15.py
 
 
