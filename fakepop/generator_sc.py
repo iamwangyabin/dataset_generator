@@ -63,7 +63,7 @@ for file_path in tqdm(file_paths):
         width = int(np.sqrt(total_pixels * aspect_ratio))
         height = int(total_pixels / width)
         prior_output = prior(
-            prompt=prompt,
+            prompt=promp,
             height=make_divisible_by_8(height),
             width=make_divisible_by_8(width),
             negative_prompt=negative_prompt,
@@ -73,7 +73,7 @@ for file_path in tqdm(file_paths):
         )
         images = decoder(
             image_embeddings=prior_output.image_embeddings.to(torch.float16),
-            prompt=prompt,
+            prompt=promp,
             negative_prompt=negative_prompt,
             guidance_scale=0.0,
             num_inference_steps=10
