@@ -46,7 +46,7 @@ output_dir = 'stable-cascade'
 os.makedirs(output_dir, exist_ok=True)
 
 def make_divisible_by_8(value):
-    return (value // 42) * 42
+    return (value // 64) * 64
 
 file_paths = list(combined_dict.keys())[:3000]
 random.shuffle(file_paths)
@@ -71,6 +71,8 @@ for file_path in tqdm(file_paths):
             num_images_per_prompt=1,
             num_inference_steps=20
         )
+
+
         images = decoder(
             image_embeddings=prior_output.image_embeddings.to(torch.float16),
             prompt=promp,
