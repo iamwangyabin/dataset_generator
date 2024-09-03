@@ -46,7 +46,7 @@ output_dir = 'stable-cascade'
 os.makedirs(output_dir, exist_ok=True)
 
 def make_divisible_by_8(value):
-    return (value // 2) * 2
+    return (value // 24) * 24
 
 file_paths = list(combined_dict.keys())[:3000]
 random.shuffle(file_paths)
