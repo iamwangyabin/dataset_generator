@@ -29,8 +29,6 @@ pipe = PixArtSigmaPipeline.from_pretrained(
     safety_checker = None,
     requires_safety_checker = False
 )
-pipe.to(device)
-
 pipe = pipe.to('cuda')
 
 output_dir = 'PixArt-Sigma-XL-2-1024-MS'

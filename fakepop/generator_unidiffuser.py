@@ -34,8 +34,6 @@ combined_dict.update(file3)
 output_dir = 'unidiffuser-v1'
 os.makedirs(output_dir, exist_ok=True)
 
-def make_divisible_by_8(value):
-    return (value // 8) * 8
 
 file_paths = list(combined_dict.keys())[:3000]
 random.shuffle(file_paths)
@@ -46,13 +44,8 @@ for file_path in tqdm(file_paths):
         continue
     else:
         promp = combined_dict[file_path]['cogvlm_caption']
-        aspect_ratio = combined_dict[file_path]['width']/combined_dict[file_path]['height']
-        ran_size = 512
-        total_pixels = ran_size*ran_size
-        width = int(np.sqrt(total_pixels * aspect_ratio))
-        height = int(total_pixels / width)
         images = pipe(prompt=promp,
-                    height=make_divisible_by_8(height), width=make_divisible_by_8(width),
+                    height=512, width=512,
                     num_inference_steps=50,
                     guidance_scale=8.0, num_images_per_prompt=1,
                     ).images[0]
