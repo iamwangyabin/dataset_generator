@@ -15,30 +15,6 @@ from transformers import AutoModelForCausalLM, AutoProcessor
 
 
 
-""""
-
-# How to use this code:
-
-# 1. Set up the device
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-# 2. Initialize the ImageMaskProcessor
-processor = ImageMaskProcessor(device)
-
-# 3. Use the save_mask_for_image method to generate and save a mask
-image_path = "path/to/your/image.jpg"
-text_input = "object or area you want to mask"
-output_path = "path/to/save/mask.png"
-expansion_pixels = 10  # Optional: adjust the mask expansion
-
-processor.save_mask_for_image(image_path, text_input, output_path, expansion_pixels)
-
-# This will load the image, generate a mask based on the text input,
-# expand the mask, and save it to the specified output path.
-
-"""
-
-
 
 
 class ImageMaskProcessor:

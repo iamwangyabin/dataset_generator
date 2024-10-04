@@ -2,7 +2,7 @@
 
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --partition=a100
+#SBATCH --partition=swarm_h100
 #SBATCH --cpus-per-task=32
 #SBATCH --gres=gpu:1
 #SBATCH --time=60:00:00
@@ -11,11 +11,12 @@ eval "$(conda shell.bash hook)"
 conda init bash
 conda activate cl
 
+
 export HF_HOME=/scratch/yw26g23/cache/
 
 # Set default values
 ROOT_DIR="./"
-SPLIT="split1"
+SPLIT="00013"
 RAW_IMAGE_DIR="raw_images"
 INSTRUCTION_DIR="instructions"
 MASK_DIR="masks"
@@ -28,7 +29,7 @@ STRENGTH_MIN=0.8
 STRENGTH_MAX=1.0
 EXPANSION_PIXELS_MIN=3
 EXPANSION_PIXELS_MAX=12
-NUM_SAMPLES=5000
+NUM_SAMPLES=10000
 
 python launch.py \
     --root_dir "$ROOT_DIR" \

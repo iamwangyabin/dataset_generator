@@ -7,52 +7,6 @@ from typing import Tuple
 IMAGE_SIZE = 1920
 
 
-'''
-How to use the FluxInpainter class:
-
-1. Import required libraries:
-   Ensure you have the diffusers library installed and torch available.
-
-2. Initialize the FluxInpainter:
-   inpainter = FluxInpainter(model_path="black-forest-labs/FLUX.1-dev", device="cuda")
-   This loads the FLUX model and prepares it for inpainting. You can specify a different model path if needed.
-
-3. Prepare your images:
-   - Have the original image file ready (the image you want to edit).
-   - Create a mask image where the area to be inpainted is white and the rest is black.
-
-4. Call the inpainter:
-   inpainted_image = inpainter(
-       image_path="path/to/original/image.jpg",
-       mask_path="path/to/mask/image.png",
-       prompt="Description of what you want to inpaint",
-       output_path="path/to/save/result.png",
-       num_inference_steps=50,
-       guidance_scale=3.5,
-       strength=0.8
-   )
-
-Parameters:
-- image_path: Path to the original image file.
-- mask_path: Path to the mask image file.
-- prompt: Text description of what you want to inpaint.
-- output_path: Where to save the resulting inpainted image.
-- num_inference_steps: Number of denoising steps (default 50, increase for potentially better quality).
-- guidance_scale: Controls how closely the model follows the prompt (default 3.5).
-- strength: Controls the extent of inpainting (default 0.8, range 0-1).
-
-5. The inpainted image will be saved to the specified output_path and also returned by the function.
-
-Notes:
-- The mask is automatically blurred to create smoother transitions.
-- Adjust num_inference_steps, guidance_scale, and strength to fine-tune results.
-- Ensure you have sufficient GPU memory, as FLUX models can be resource-intensive.
-- The quality of inpainting depends on the prompt, mask, and parameter settings.
-
-This class provides a straightforward interface for inpainting using the FLUX model, 
-suitable for integration into larger image processing pipelines or for standalone use.
-'''
-
 def resize_image_dimensions(
     original_resolution_wh: Tuple[int, int],
     factor: int

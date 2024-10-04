@@ -2,44 +2,6 @@ from transformers import Qwen2VLForConditionalGeneration, AutoTokenizer, AutoPro
 from qwen_vl_utils import process_vision_info
 import json
 
-'''
-How to use the Qwen2VLImageEditor class:
-
-1. Import required libraries:
-   Ensure you have the necessary libraries installed, including transformers and any custom modules like qwen_vl_utils.
-
-2. Initialize the Qwen2VLImageEditor:
-   editor = Qwen2VLImageEditor()
-   This will load the Qwen2-VL-7B-Instruct model and set up the processor.
-
-3. Prepare your image:
-   Have the image file ready and accessible. You'll need the path to this image.
-
-4. Create an image caption:
-   Prepare a brief description of the image you want to edit.
-
-5. Generate edit suggestions:
-   image_path = "path/to/your/image.jpg"
-   image_caption = "A man wearing a red shirt standing in front of a brick wall"
-   edit_suggestion = editor.generate_edit_suggestion(image_caption, image_path)
-
-6. Process the results:
-   The edit_suggestion will be a dictionary containing three keys:
-   - "area_to_replace": The specific area or object in the image to be replaced
-   - "new_object": The suggested new object to replace the original content
-   - "edited_description": A description of how the whole image would look after the suggested edit
-
-7. Use the suggestions:
-   You can now use these suggestions to guide your image editing process, whether manually or with another AI tool.
-
-Remember:
-- Ensure you have sufficient GPU memory, as the model is quite large.
-- The quality of suggestions depends on the clarity and detail of your image caption.
-- This tool provides suggestions; actual image editing would require additional steps or tools.
-- Be prepared for some variability in the output, as language models can sometimes produce unexpected results.
-
-This code sets up a powerful AI-driven image editing suggestion system, which you can integrate into larger workflows or use as a standalone tool for creative ideation in image editing tasks.
-'''
 
 
 
