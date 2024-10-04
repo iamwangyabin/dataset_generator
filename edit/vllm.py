@@ -27,7 +27,7 @@ class Qwen2VLImageEditor:
         Based on this image and its description '{image_caption}', suggest a specific region or object in the image that could be 
         realistically altered or replaced. Then, propose a new element or object to replace it with.
         Remember, you can't change other parts of the image, so make the change compel with the raw image style and atmosphere.
-        Your response should be in format and include three:
+        Your response should be in format and include:
         Example:
         {{
           "raw_description": "Describe this image",
