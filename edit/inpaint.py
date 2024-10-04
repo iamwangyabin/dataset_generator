@@ -77,7 +77,10 @@ class FluxInpainter:
 
 class SD15Inpainter:
     def __init__(self, model_path="benjamin-paine/stable-diffusion-v1-5-inpainting", device="cuda"):
-        self.pipe = StableDiffusionInpaintPipeline.from_pretrained(model_path, variant="fp16", torch_dtype=torch.float16)
+        self.pipe = StableDiffusionInpaintPipeline.from_pretrained(model_path, variant="fp16", torch_dtype=torch.float16,
+                                                                   safety_checker=None,
+                                                                   requires_safety_checker=False
+                                                                   )
         self.pipe = self.pipe.to(device)
 
     def __call__(self, image_path, mask_path, prompt, output_dir,
@@ -105,7 +108,7 @@ class SD15Inpainter:
             num_inference_steps=num_inference_steps,
             guidance_scale=guidance_scale,
             strength=strength,
-            num_images_per_prompt=8,
+            num_images_per_prompt=4,
         )
 
         image_name = os.path.basename(image_path)
