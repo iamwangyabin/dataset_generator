@@ -18,10 +18,10 @@ from PIL import Image
 
 
 def visualize_inpainting_results(root_dir, num_samples=5):
-    raw_dir = os.path.join(root_dir, '00013', 'raw_image')
-    mask_dir = os.path.join(root_dir, '00013', 'mask')
+    raw_dir = os.path.join(root_dir, '00013', 'raw_images')
+    mask_dir = os.path.join(root_dir, '00013', 'masks')
     generated_dir = os.path.join(root_dir, '00013', 'generated')
-    instruction_dir = os.path.join(root_dir, '00013', 'instruction')
+    instruction_dir = os.path.join(root_dir, '00013', 'instructions')
 
     # 获取生成的图像文件名
     generated_files = [f for f in os.listdir(generated_dir) if f.endswith('.jpg') or f.endswith('.png')]
