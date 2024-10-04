@@ -24,6 +24,39 @@ AIGC Operations:
 - Add New Object 
 
 
+
+
+Log:
+00013 Flux inpaint
+
+000065 SD15 inpaint
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 for each operation we need write code to implement
 but we have to design the pipline for each operation first
 
@@ -58,10 +91,6 @@ d. Blend the new object into the original image
 e. Save the edited image
 
 
-
-
-
-
 Outpainting Pipeline:
 a. Load a real image
 b. Expand the canvas size
@@ -75,6 +104,10 @@ b. Select an object or region to erase
 c. Create a mask for the selected region
 d. Use AI model to fill the erased region
 e. Save the edited image
+
+
+
+
 
 
 

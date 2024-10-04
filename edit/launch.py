@@ -8,7 +8,7 @@ import torch
 from PIL import Image
 from vllm import Qwen2VLImageEditor
 from sam import ImageMaskProcessor
-from inpaint import FluxInpainter
+from inpaint import FluxInpainter, SD15Inpainter
 from filter import ImageTextSimilarityScorer
 
 
@@ -17,6 +17,7 @@ def parse_arguments():
     parser = argparse.ArgumentParser(description="Image Inpainting Pipeline Configuration")
 
     # Directory configuration
+    parser.add_argument('--mode', type=str, default='flux', help='choose inpainting methods')
     parser.add_argument('--root_dir', type=str, default='./', help='Root directory path')
     parser.add_argument('--split', type=str, default='split1', help='Data split name')
     parser.add_argument('--raw_image_dir', type=str, default='raw_image', help='Raw image directory')
@@ -25,7 +26,6 @@ def parse_arguments():
     parser.add_argument('--generated_dir', type=str, default='generated', help='Generated image directory')
 
     # Model and processing parameters
-    parser.add_argument('--inpainter_model', type=str, default='black-forest-labs/FLUX.1-dev', help='Inpainting model path')
     parser.add_argument('--infer_steps_min', type=int, default=10, help='Minimum inference steps')
     parser.add_argument('--infer_steps_max', type=int, default=30, help='Maximum inference steps')
     parser.add_argument('--guidance_scale', type=float, default=3.5, help='Guidance scale')
@@ -70,7 +70,13 @@ def initialize_processors(config):
 
     editor = Qwen2VLImageEditor()
     processor = ImageMaskProcessor(device)
-    inpainter = FluxInpainter(model_path=config.inpainter_model, device=device)
+
+    if config.mode == 'flux':
+        inpainter = FluxInpainter(device=device)
+    elif config.mode == 'sd15':
+        inpainter = SD15Inpainter(device=device)
+
+
     scorer = ImageTextSimilarityScorer(device=device)
 
     logging.info("Initialization of all processors and models completed.")
