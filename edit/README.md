@@ -27,9 +27,38 @@ AIGC Operations:
 
 
 Log:
+Flux
 00013 Flux inpaint
 
-000065 SD15 inpaint
+SD15
+00065 SD15 inpaint
+00048 SD15 inpaint
+00370 SD15 inpaint
+00099 SD15 inpaint
+00115 SD15 inpaint
+00073 SD15 inpaint
+00015 SD15 inpaint
+
+
+SD2
+
+
+
+
+SD3 CN
+
+
+
+
+
+SDXL (need Fooocus)
+Kolors
+SC CN (official)
+pixart_inpaint.py
+
+PowerPaint
+BrushNet
+Paint by Example
 
 
 
@@ -115,21 +144,7 @@ e. Save the edited image
 
 
 
-try sdxl:
 
-I want to do automatically Inpainting / Region Edition / Replace pipeline of a given image
-to create a dataset of image manimuplation detection.
-So i need LLM to give instruction of which part to replace and the target content
-here are steps i plain
-
-1st, use florence to caption (or just use provided caption)
-2nd, ask LLM to choose an which region to edit (inpaint), and get the target content of the region want to replace
-3rd, use SAM 2 to ground segmentation this part
-4th, use mask+image+new caption to inpaint
-
-give me the prompts i need to give llm to get what i want
-
-(SD1.5 SD2 SDXL SD3 FLUX)
 
 
 
