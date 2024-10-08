@@ -222,6 +222,7 @@ class SD3CNInpainter:
         # Call the pipeline
         output = self.pipe(
             negative_prompt="deformed, distorted, disfigured, poorly drawn, bad anatomy, wrong anatomy, extra limb, missing limb, floating limbs, mutated hands and fingers, disconnected limbs, mutation, mutated, ugly, disgusting, blurry, amputation, NSFW",
+            image=init_image,
             prompt=prompt,
             height=height,
             width=width,

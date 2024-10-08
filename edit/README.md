@@ -40,12 +40,17 @@ SD15
 00015 SD15 inpaint
 
 
+SD3 CN
+00195 SD3 inpaint
+
+
+
+
 SD2
 
 
 
 
-SD3 CN
 
 
 

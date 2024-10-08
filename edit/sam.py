@@ -13,10 +13,6 @@ from sam2.sam2_image_predictor import SAM2ImagePredictor
 from transformers import AutoModelForCausalLM, AutoProcessor
 
 
-
-
-
-
 class ImageMaskProcessor:
     def __init__(self, device: torch.device):
         self.device = device

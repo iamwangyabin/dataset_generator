@@ -3,7 +3,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --partition=swarm_h100
-#SBATCH --cpus-per-task=32
+#SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --time=60:00:00
 
@@ -31,35 +31,34 @@ export HF_HOME=/scratch/yw26g23/cache/
 #    --expansion_pixels_max 12 \
 #    --num_samples 10000
 
-python launch.py \
-    --mode "sd15" \
-    --root_dir "./" \
-    --split "split1" \
-    --raw_image_dir "raw_images" \
-    --instruction_dir "instructions" \
-    --mask_dir "masks" \
-    --generated_dir "generated" \
-    --infer_steps_min 27 \
-    --infer_steps_max 50 \
-    --guidance_scale 7.5 \
-    --strength_min 0.75 \
-    --strength_max 1.0 \
-    --expansion_pixels_min 3 \
-    --expansion_pixels_max 12 \
-    --num_samples 10000
-
 #python launch.py \
-#    --mode "sd3" \
+#    --mode "sd15" \
 #    --root_dir "./" \
 #    --split "split1" \
 #    --raw_image_dir "raw_images" \
 #    --instruction_dir "instructions" \
 #    --mask_dir "masks" \
 #    --generated_dir "generated" \
+#    --infer_steps_min 27 \
+#    --infer_steps_max 50 \
+#    --guidance_scale 7.5 \
+#    --strength_min 0.75 \
 #    --strength_max 1.0 \
 #    --expansion_pixels_min 3 \
 #    --expansion_pixels_max 12 \
 #    --num_samples 10000
+
+python launch.py \
+    --mode "sd3" \
+    --root_dir "./" \
+    --split "00195" \
+    --raw_image_dir "raw_images" \
+    --instruction_dir "instructions" \
+    --mask_dir "masks" \
+    --generated_dir "generated" \
+    --expansion_pixels_min 3 \
+    --expansion_pixels_max 12 \
+    --num_samples 10000
 
 
 
