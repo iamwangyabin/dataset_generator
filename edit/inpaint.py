@@ -219,8 +219,6 @@ class SD3CNInpainter:
             image=init_image,
             height=height,
             width=width,
-            control_image=init_image,
-            control_mask=blurred_mask,
             num_inference_steps=50,
             strength=0.8,
             generator=generator,
