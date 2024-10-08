@@ -185,13 +185,10 @@ class SDXLInpainter:
 
 class SD3CNInpainter:
     def __init__(self, model_path="stabilityai/stable-diffusion-3-medium-diffusers", device="cuda"):
-
         self.pipe = StableDiffusion3InpaintPipeline.from_pretrained(
             "stabilityai/stable-diffusion-3-medium-diffusers",
             torch_dtype=torch.float16,
         ).to(device)
-        self.pipe.text_encoder.to(torch.float16)
-        self.pipe.controlnet.to(torch.float16)
 
 
     def __call__(self, image_path, mask_path, prompt, output_dir,
@@ -217,6 +214,7 @@ class SD3CNInpainter:
         output = self.pipe(
             prompt=prompt,
             image=init_image,
+            mask_image=blurred_mask,
             height=height,
             width=width,
             num_inference_steps=50,
