@@ -1,13 +1,10 @@
 
-from diffusers.utils import load_image, check_min_version
-
 from diffusers import (
     FluxInpaintPipeline,
     StableDiffusionInpaintPipeline,
     AutoPipelineForInpainting,
-    StableDiffusion3ControlNetInpaintingPipeline
+    StableDiffusion3InpaintPipeline
 )
-from diffusers.models.controlnet_sd3 import SD3ControlNetModel
 
 
 import torch
@@ -188,12 +185,9 @@ class SDXLInpainter:
 
 class SD3CNInpainter:
     def __init__(self, model_path="stabilityai/stable-diffusion-3-medium-diffusers", device="cuda"):
-        controlnet = SD3ControlNetModel.from_pretrained(
-            "alimama-creative/SD3-Controlnet-Inpainting", use_safetensors=True, extra_conditioning_channels=1
-        )
-        self.pipe = StableDiffusion3ControlNetInpaintingPipeline.from_pretrained(
+
+        self.pipe = StableDiffusion3InpaintPipeline.from_pretrained(
             "stabilityai/stable-diffusion-3-medium-diffusers",
-            controlnet=controlnet,
             torch_dtype=torch.float16,
         ).to(device)
         self.pipe.text_encoder.to(torch.float16)
@@ -205,7 +199,7 @@ class SD3CNInpainter:
         init_image = Image.open(image_path).convert("RGB")
         mask_image = Image.open(mask_path).convert("RGB")
 
-        width, height = resize_image_dimensions(original_resolution_wh=init_image.size, factor=8)
+        width, height = resize_image_dimensions(original_resolution_wh=init_image.size, factor=16)
         init_image = init_image.resize((width, height), Image.LANCZOS)
         mask_image = mask_image.resize((width, height), Image.LANCZOS)
 
@@ -221,16 +215,15 @@ class SD3CNInpainter:
 
         # Call the pipeline
         output = self.pipe(
-            negative_prompt="deformed, distorted, disfigured, poorly drawn, bad anatomy, wrong anatomy, extra limb, missing limb, floating limbs, mutated hands and fingers, disconnected limbs, mutation, mutated, ugly, disgusting, blurry, amputation, NSFW",
-            image=init_image,
             prompt=prompt,
+            image=init_image,
             height=height,
             width=width,
             control_image=init_image,
             control_mask=blurred_mask,
-            num_inference_steps=28,
+            num_inference_steps=50,
+            strength=0.8,
             generator=generator,
-            controlnet_conditioning_scale=0.95,
             guidance_scale=7,
             num_images_per_prompt=2,
         )
