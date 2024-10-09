@@ -237,7 +237,7 @@ class SD3CNInpainter:
 
 
 class SD2Inpainter:
-    def __init__(self, model_path="diffusers/stable-diffusion-xl-1.0-inpainting-0.1", device="cuda"):
+    def __init__(self, model_path="stabilityai/stable-diffusion-2-inpainting", device="cuda"):
         self.pipe = StableDiffusionInpaintPipeline.from_pretrained(
             "stabilityai/stable-diffusion-2-inpainting",
             torch_dtype=torch.float16,
@@ -267,6 +267,8 @@ class SD2Inpainter:
         output = self.pipe(
             prompt=prompt,
             image=init_image,
+            width=width,
+            height=height,
             mask_image=blurred_mask,
             guidance_scale=guidance_scale,
             num_inference_steps=num_inference_steps,
