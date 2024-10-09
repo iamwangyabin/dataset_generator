@@ -234,3 +234,63 @@ class SD3CNInpainter:
 
         return saved_paths
 
+
+
+class SD2Inpainter:
+    def __init__(self, model_path="diffusers/stable-diffusion-xl-1.0-inpainting-0.1", device="cuda"):
+        self.pipe = StableDiffusionInpaintPipeline.from_pretrained(
+            "stabilityai/stable-diffusion-2-inpainting",
+            torch_dtype=torch.float16,
+            ).to(device)
+
+    def __call__(self, image_path, mask_path, prompt, output_dir,
+                 num_inference_steps=20, guidance_scale=8.0, strength=0.99):
+        init_image = Image.open(image_path).convert("RGB")
+        mask_image = Image.open(mask_path).convert("RGB")
+
+        # SDXL typically uses 1024x1024 resolution
+        width, height = resize_image_dimensions(original_resolution_wh=init_image.size, factor=8)
+        init_image = init_image.resize((width, height), Image.LANCZOS)
+        mask_image = mask_image.resize((width, height), Image.LANCZOS)
+
+        # Ensure the mask is black and white
+        mask_image = mask_image.convert("L")
+        mask_image = mask_image.convert("RGB")
+
+        # Apply blur to mask (Note: SDXL might handle this internally, but we'll keep it for consistency)
+        blur_factor = random.randint(10, 30)
+        blurred_mask = self.pipe.mask_processor.blur(mask_image, blur_factor=blur_factor)
+
+        generator = torch.Generator(device="cuda").manual_seed(0)
+
+        # Call the pipeline
+        output = self.pipe(
+            prompt=prompt,
+            image=init_image,
+            mask_image=blurred_mask,
+            guidance_scale=guidance_scale,
+            num_inference_steps=num_inference_steps,
+            strength=strength,
+            generator=generator,
+            num_images_per_prompt=2,
+        )
+
+        image_name = os.path.basename(image_path)
+        image_name_without_extension = os.path.splitext(image_name)[0]
+        saved_paths = []
+        for i, image in enumerate(output.images):
+            output_path = os.path.join(output_dir, f"{image_name_without_extension}_{i}.png")
+            image.save(output_path)
+            saved_paths.append(output_path)
+
+        return saved_paths
+
+
+
+
+
+
+
+
+
+

@@ -48,17 +48,43 @@ export HF_HOME=/scratch/yw26g23/cache/
 #    --expansion_pixels_max 12 \
 #    --num_samples 10000
 
+#python launch.py \
+#    --mode "sd3" \
+#    --root_dir "./" \
+#    --split "00195" \
+#    --raw_image_dir "raw_images" \
+#    --instruction_dir "instructions" \
+#    --mask_dir "masks" \
+#    --generated_dir "generated" \
+#    --expansion_pixels_min 3 \
+#    --expansion_pixels_max 12 \
+#    --num_samples 10000
+
+
 python launch.py \
-    --mode "sd3" \
+    --mode "sd2" \
     --root_dir "./" \
-    --split "00195" \
+    --split "00200" \
     --raw_image_dir "raw_images" \
     --instruction_dir "instructions" \
     --mask_dir "masks" \
     --generated_dir "generated" \
+    --infer_steps_min 27 \
+    --infer_steps_max 50 \
+    --guidance_scale 7.5 \
+    --strength_min 0.75 \
+    --strength_max 1.0 \
     --expansion_pixels_min 3 \
     --expansion_pixels_max 12 \
     --num_samples 10000
+
+
+
+
+
+
+
+
 
 
 
