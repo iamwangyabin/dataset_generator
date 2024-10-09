@@ -8,7 +8,7 @@ import torch
 from PIL import Image
 from vllm import Qwen2VLImageEditor
 from sam import ImageMaskProcessor
-from inpaint import FluxInpainter, SD15Inpainter, SD3CNInpainter, SD2Inpainter
+from inpaint import FluxInpainter, SD15Inpainter, SD3CNInpainter, SD2Inpainter, SDXLInpainter
 from filter import ImageTextSimilarityScorer
 
 
@@ -79,6 +79,9 @@ def initialize_processors(config):
         inpainter = SD3CNInpainter(device=device)
     elif config.mode == 'sd2':
         inpainter = SD2Inpainter(device=device)
+    elif config.mode == 'sdxl':
+        inpainter = SDXLInpainter(device=device)
+
 
 
 
