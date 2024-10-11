@@ -7,7 +7,6 @@ from diffusers import (
     StableDiffusionXLInpaintPipeline
 )
 
-
 import torch
 from PIL import Image
 import os
@@ -20,7 +19,8 @@ def resize_image_dimensions(
     factor: int
 ) -> Tuple[int, int]:
     width, height = original_resolution_wh
-    maximum_dimension = max(width, height)
+    # maximum_dimension = 1920
+    maximum_dimension = random.randint(1024, 1920)
 
     if width > height:
         scaling_factor = maximum_dimension / width
@@ -287,6 +287,14 @@ class SD2Inpainter:
             saved_paths.append(output_path)
 
         return saved_paths
+
+
+
+
+
+
+
+
 
 
 

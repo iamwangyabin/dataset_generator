@@ -27,16 +27,17 @@ AIGC Operations:
 
 
 Log:
-
+https://huggingface.co/datasets/drawthingsai/megalith-10m/resolve/main/00371.tar
+mkdir -p 00014/raw_images && tar -xvf 00014.tar -C 00014/raw_images
 
 Flux
 00013 Flux inpaint
+00014 Flux inpaint
+00016
+00017
+00018
+00019
 
-
-
-
-https://huggingface.co/datasets/drawthingsai/megalith-10m/resolve/main/00371.tar
-mkdir -p 00371/raw_images && tar -xvf 00371.tar -C 00371/raw_images
 
 
 
@@ -49,8 +50,8 @@ SD15
 00115 SD15 inpaint
 00370 SD15 inpaint
 00371 SD15 inpaint
-00372
-00373
+00372 SD15 inpaint
+00373 SD15 inpaint
 
 SD2
 00200 SD2 inpaint
@@ -58,41 +59,31 @@ SD2
 SD3
 00195 SD3 inpaint
 
-
 SDXL (original)
 00210
 
 
-
-
 SDXL (Fooocus)
 
-
-
-
-
+Playground2.5 (Fooocus)
 
 
 SC CN (official)
 
 
+PowerPaint
 
 
+BrushNet
 
 
 Kolors (official)
  
 
 
+pixart_inpaint
 
 
-
-
-
-pixart_inpaint.py
-PowerPaint
-BrushNet
-Paint by Example
 
 
 

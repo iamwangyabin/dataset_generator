@@ -15,20 +15,18 @@ import json
 import matplotlib.pyplot as plt
 from PIL import Image
 import random
+import cv2
+import numpy as np
+import shutil
 
 def visualize_inpainting_results(root_dir, num_samples=5):
-    raw_dir = os.path.join(root_dir, '00115', 'raw_images')
-    mask_dir = os.path.join(root_dir, '00115', 'masks')
-    generated_dir = os.path.join(root_dir, '00115', 'generated')
-    instruction_dir = os.path.join(root_dir, '00115', 'instructions')
+    raw_dir = os.path.join(root_dir, '00195', 'raw_images')
+    mask_dir = os.path.join(root_dir, '00195', 'masks')
+    generated_dir = os.path.join(root_dir, '00195', 'generated')
+    instruction_dir = os.path.join(root_dir, '00195', 'instructions')
 
-    # 获取生成的图像文件名
     generated_files = [f for f in os.listdir(generated_dir) if f.endswith('.jpg') or f.endswith('.png')]
-
-    # 限制样本数量
     generated_files = random.sample(generated_files, num_samples)
-
-    # 创建一个大图来存储所有比较结果
     fig, axes = plt.subplots(num_samples, 3, figsize=(9, 3 * num_samples))
 
     for i, generated_file in enumerate(generated_files):
@@ -38,15 +36,26 @@ def visualize_inpainting_results(root_dir, num_samples=5):
         mask_path = os.path.join(mask_dir, f"{base_name}_mask.png")
         generated_path = os.path.join(generated_dir, generated_file)
         json_path = os.path.join(instruction_dir, f"{base_name}.json")
-
-        # 读取JSON文件
         with open(json_path, 'r') as f:
             instruction = json.load(f)
 
-        # 打开图像
         raw_img = Image.open(raw_path)
         mask_img = Image.open(mask_path)
         generated_img = Image.open(generated_path)
+
+        mask_np = np.array(mask_img)
+        generated_np = np.array(generated_img)
+
+        # 边缘检测以获取轮廓
+        edges = cv2.Canny(mask_np, threshold1=50, threshold2=150)
+        contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+        # 绘制轮廓在生成的图像上
+        contour_img = generated_np.copy()
+        cv2.drawContours(contour_img, contours, -1, (255, 0, 0), 2)  # Blue contours
+
+        # 转换回PIL图像
+        contour_pil = Image.fromarray(contour_img)
 
         # 获取当前行的子图
         ax1, ax2, ax3 = axes[i]
@@ -59,14 +68,13 @@ def visualize_inpainting_results(root_dir, num_samples=5):
         ax2.set_title("mask")
         ax2.axis('off')
 
-        ax3.imshow(generated_img)
+        ax3.imshow(contour_pil)
         ax3.set_title("inpainted")
         ax3.axis('off')
         info_text = f"selected region: {instruction['area_to_replace']}\nedition: {instruction['new_object']}"
         fig.text(0.5, 1 - (i + 1) / num_samples + 0.02, info_text, ha='center', va='center',
                  fontsize=10, bbox={"facecolor": "orange", "alpha": 0.5, "pad": 5},
                  transform=fig.transFigure, wrap=True)
-
 
     plt.tight_layout()
 
@@ -82,8 +90,24 @@ visualize_inpainting_results(root_directory, num_samples=5)
 
 
 
-
-
+# import requests
+#
+# API_URL = "https://api-inference.huggingface.co/models/OnomaAIResearch/Illustrious-xl-early-release-v0"
+# headers = {"Authorization": "Bearer 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"}
+#
+# def query(payload):
+#     response = requests.post(API_URL, headers=headers, json=payload)
+#     return response.content
+#
+#
+# image_bytes = query({
+# 	"inputs": "Astronaut riding a horse",
+# })
+# # You can access the image with PIL.Image for example
+# import io
+# from PIL import Image
+# image = Image.open(io.BytesIO(image_bytes))
+#
 
 
 
