@@ -6,6 +6,7 @@ from diffusers import (
     StableDiffusion3InpaintPipeline,
     StableDiffusionXLInpaintPipeline
 )
+from diffusers import FluxFillPipeline
 
 import torch
 from PIL import Image
@@ -133,12 +134,9 @@ class SD15Inpainter:
 
 class SDXLInpainter:
     def __init__(self, model_path="diffusers/stable-diffusion-xl-1.0-inpainting-0.1", device="cuda"):
-        self.pipe = StableDiffusionXLInpaintPipeline.from_pretrained(
-            "stabilityai/stable-diffusion-xl-base-1.0",
-            torch_dtype=torch.float16,
-            variant="fp16",
-            use_safetensors=True,
-        ).to(device)
+
+        self.pipe = AutoPipelineForInpainting.from_pretrained("diffusers/stable-diffusion-xl-1.0-inpainting-0.1",
+                                                         torch_dtype=torch.float16, variant="fp16").to(device)
 
     def __call__(self, image_path, mask_path, prompt, output_dir,
                  num_inference_steps=20, guidance_scale=8.0, strength=0.99):
@@ -165,6 +163,8 @@ class SDXLInpainter:
             prompt=prompt,
             image=init_image,
             mask_image=blurred_mask,
+            width=width,
+            height=height,
             guidance_scale=guidance_scale,
             num_inference_steps=num_inference_steps,
             strength=strength,
@@ -181,7 +181,6 @@ class SDXLInpainter:
             saved_paths.append(output_path)
 
         return saved_paths
-
 
 
 class SD3CNInpainter:
@@ -287,6 +286,59 @@ class SD2Inpainter:
             saved_paths.append(output_path)
 
         return saved_paths
+
+
+
+
+class FluxFillInpainter:
+    def __init__(self, model_path="black-forest-labs/FLUX.1-Fill-dev", device="cuda"):
+        self.pipe = FluxFillPipeline.from_pretrained(model_path, torch_dtype=torch.float16)
+        self.pipe = self.pipe.to(device)
+
+    def __call__(self, image_path, mask_path, prompt, output_dir,
+                 num_inference_steps=50, guidance_scale=3.5, strength=1):
+        init_image = Image.open(image_path).convert("RGB")
+        mask_image = Image.open(mask_path).convert("RGB")
+
+        width, height = resize_image_dimensions(original_resolution_wh=init_image.size, factor=8)
+        init_image = init_image.resize((width, height), Image.LANCZOS)
+        mask_image = mask_image.resize((width, height), Image.LANCZOS)
+
+        # Ensure the mask is black and white
+        mask_image = mask_image.convert("L")
+        mask_image = mask_image.convert("RGB")
+        blur_factor = random.randint(10, 30)
+        blurred_mask = self.pipe.mask_processor.blur(mask_image, blur_factor=blur_factor)
+
+        # Call the pipeline
+        output = self.pipe(
+            prompt=prompt,
+            image=init_image,
+            mask_image=blurred_mask,
+            width=width,
+            height=height,
+            num_inference_steps=num_inference_steps,
+            guidance_scale=guidance_scale,
+            # strength=strength,
+            num_images_per_prompt=2,
+        )
+
+        image_name = os.path.basename(image_path)
+        image_name_without_extension = os.path.splitext(image_name)[0]
+        saved_paths = []
+        for i, image in enumerate(output.images):
+            output_path = os.path.join(output_dir, f"{image_name_without_extension}_{i}.png")
+            image.save(output_path)
+            saved_paths.append(output_path)  # Store the path
+
+        return saved_paths
+
+
+
+
+
+
+
 
 
 

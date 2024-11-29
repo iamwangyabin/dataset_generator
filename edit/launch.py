@@ -8,7 +8,7 @@ import torch
 from PIL import Image
 from vllm import Qwen2VLImageEditor
 from sam import ImageMaskProcessor
-from inpaint import FluxInpainter, SD15Inpainter, SD3CNInpainter, SD2Inpainter, SDXLInpainter
+from inpaint import FluxInpainter, SD15Inpainter, SD3CNInpainter, SD2Inpainter, SDXLInpainter, FluxFillInpainter
 from filter import ImageTextSimilarityScorer
 
 
@@ -68,8 +68,6 @@ def initialize_processors(config):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     logging.info(f"Using device: {device}")
 
-    editor = Qwen2VLImageEditor()
-    processor = ImageMaskProcessor(device)
 
     if config.mode == 'flux':
         inpainter = FluxInpainter(device=device)
@@ -81,6 +79,14 @@ def initialize_processors(config):
         inpainter = SD2Inpainter(device=device)
     elif config.mode == 'sdxl':
         inpainter = SDXLInpainter(device=device)
+    elif config.mode == 'fluxfill':
+        inpainter = FluxFillInpainter(device=device)
+
+
+
+
+    editor = Qwen2VLImageEditor()
+    processor = ImageMaskProcessor(device)
 
 
 

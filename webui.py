@@ -97,7 +97,7 @@ def thirty_percent_true():
 
 import json
 
-with open('coco_width.json', 'r') as json_file:
+with open('image_width.json', 'r') as json_file:
     file_name2width = json.load(json_file)
 
 with open('coco_height.json', 'r') as json_file:
